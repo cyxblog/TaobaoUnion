@@ -1,5 +1,7 @@
 package com.example.taobaounion.model.domain;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -137,7 +139,7 @@ public class RecommendContent implements Serializable {
                     this.map_data = map_data;
                 }
 
-                public static class MapDataDTO implements Serializable {
+                public static class MapDataDTO implements Serializable, IBaseInfo {
                     private Integer category_id;
                     private String click_url;
                     private String commission_rate;
@@ -355,8 +357,18 @@ public class RecommendContent implements Serializable {
                         this.small_images = small_images;
                     }
 
+                    @Override
+                    public String getCover() {
+                        return getPict_url();
+                    }
+
                     public String getTitle() {
                         return title;
+                    }
+
+                    @Override
+                    public String getUrl() {
+                        return TextUtils.isEmpty(getCoupon_click_url()) ? getCoupon_click_url() : getClick_url();
                     }
 
                     public void setTitle(String title) {

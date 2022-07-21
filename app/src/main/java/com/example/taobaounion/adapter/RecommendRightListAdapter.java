@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.taobaounion.R;
+import com.example.taobaounion.model.domain.IBaseInfo;
 import com.example.taobaounion.model.domain.RecommendContent;
 import com.example.taobaounion.utils.LogUtils;
 import com.example.taobaounion.utils.UrlUtils;
@@ -99,6 +100,6 @@ public class RecommendRightListAdapter extends RecyclerView.Adapter<RecommendRig
     }
 
     public interface OnRightListItemClickListener{
-        void onRightListItemClick(RecommendContent.DataDTO.TbkDgOptimusMaterialResponseDTO.ResultListDTO.MapDataDTO item);
+        void onRightListItemClick(IBaseInfo item);
     }
 }

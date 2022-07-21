@@ -130,8 +130,7 @@ public class RecommendPresenterImpl implements IRecommendPresenter{
 
     @Override
     public void unregisterCallback(IRecommendCallback callback) {
-        if (mViewCallback != null) {
-            mViewCallback = null;
-        }
+        mViewCallback = null;
+        callback = null;
     }
 }

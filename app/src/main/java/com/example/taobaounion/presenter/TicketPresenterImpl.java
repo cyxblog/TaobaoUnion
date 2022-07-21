@@ -98,6 +98,7 @@ public class TicketPresenterImpl implements ITicketPresenter {
     @Override
     public void unregisterCallback(ITicketCallback callback) {
         mViewCallback = null;
+        callback = null;
     }
 
     private void onTicketLoading() {

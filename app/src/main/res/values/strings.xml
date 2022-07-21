@@ -11,4 +11,5 @@
     <string name="text_tao_kou_ling">淘口令</string>
     <string name="text_loading">正在加载...</string>
     <string name="text_recommend_title">精选宝贝</string>
+    <string name="text_on_sell_title">特惠宝贝</string>
 </resources>

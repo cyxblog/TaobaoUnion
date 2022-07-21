@@ -3,7 +3,10 @@ package com.example.taobaounion.fragments;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +18,7 @@ import com.example.taobaounion.adapter.RecommendLeftListAdapter;
 import com.example.taobaounion.adapter.RecommendRightListAdapter;
 import com.example.taobaounion.base.BaseFragment;
 import com.example.taobaounion.model.domain.HomePagerContent;
+import com.example.taobaounion.model.domain.IBaseInfo;
 import com.example.taobaounion.model.domain.RecommendCategories;
 import com.example.taobaounion.model.domain.RecommendContent;
 import com.example.taobaounion.presenter.IRecommendPresenter;
@@ -22,6 +26,7 @@ import com.example.taobaounion.presenter.ITicketPresenter;
 import com.example.taobaounion.utils.LogUtils;
 import com.example.taobaounion.utils.PresenterManager;
 import com.example.taobaounion.utils.SizeUtils;
+import com.example.taobaounion.utils.TicketUtil;
 import com.example.taobaounion.view.IRecommendCallback;
 
 import java.util.List;
@@ -103,6 +108,14 @@ public class RecommendFragment extends BaseFragment implements IRecommendCallbac
     }
 
     @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        View rootView = inflater.inflate(R.layout.fragment_with_bar_layout, container, false);
+        TextView titleView = rootView.findViewById(R.id.fragment_title);
+        titleView.setText(R.string.text_recommend_title);
+        return rootView;
+    }
+
+    @Override
     public void onRecommendCategoriesLoaded(List<RecommendCategories.DataDTO> result) {
         setUpState(State.SUCCESS);
         LogUtils.d(this, "onRecommendCategoriesLoaded...." + result);
@@ -157,23 +170,11 @@ public class RecommendFragment extends BaseFragment implements IRecommendCallbac
     }
 
     @Override
-    public void onRightListItemClick(RecommendContent.DataDTO.TbkDgOptimusMaterialResponseDTO.ResultListDTO.MapDataDTO item) {
+    public void onRightListItemClick(IBaseInfo item) {
         handleItemClick(item);
     }
 
-    private void handleItemClick(RecommendContent.DataDTO.TbkDgOptimusMaterialResponseDTO.ResultListDTO.MapDataDTO item) {
-        //处理数据
-        String title = item.getTitle();
-        //领券页面
-        String url = item.getCoupon_click_url();
-        if (TextUtils.isEmpty(url)) {
-            // 详情页面
-            url = item.getClick_url();
-        }
-        String cover = item.getPict_url();
-        // 拿到TicketPresenter对象
-        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
-        ticketPresenter.getTicket(title, url , cover);
-        startActivity(new Intent(getContext(), TicketActivity.class));
+    private void handleItemClick(IBaseInfo item) {
+        TicketUtil.toTicketPage(getContext(), item);
     }
 }

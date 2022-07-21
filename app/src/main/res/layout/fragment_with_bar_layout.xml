@@ -7,42 +7,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/colorPrimaryDark"
-        android:gravity="center_vertical">
+        android:background="@color/colorPrimaryDark">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="领券联盟"
-            android:layout_centerVertical="true"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:layout_marginStart="10dp"
-            android:id="@+id/iv_logo"/>
-
-        <EditText
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_toEndOf="@+id/iv_logo"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_toStartOf="@+id/scan_icon"
-            android:background="@drawable/shape_edit_bg"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:focusable="false"
-            android:textSize="16sp"
-            android:hint="@string/text_search_hint"
-            android:layout_centerVertical="true"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/scan_icon"
-            android:layout_alignParentEnd="true"
-            android:src="@mipmap/scan_white"
-            android:layout_marginEnd="10dp"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:id="@+id/fragment_title"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

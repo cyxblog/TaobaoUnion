@@ -22,6 +22,7 @@ import com.example.taobaounion.adapter.LooperPagerAdapter;
 import com.example.taobaounion.base.BaseFragment;
 import com.example.taobaounion.model.domain.Categories;
 import com.example.taobaounion.model.domain.HomePagerContent;
+import com.example.taobaounion.model.domain.IBaseInfo;
 import com.example.taobaounion.presenter.CategoryPagerPresenterImpl;
 import com.example.taobaounion.presenter.ICategoryPagerPresenter;
 import com.example.taobaounion.presenter.ITicketPresenter;
@@ -30,6 +31,7 @@ import com.example.taobaounion.utils.Constants;
 import com.example.taobaounion.utils.LogUtils;
 import com.example.taobaounion.utils.PresenterManager;
 import com.example.taobaounion.utils.SizeUtils;
+import com.example.taobaounion.utils.TicketUtil;
 import com.example.taobaounion.utils.ToastUtil;
 import com.example.taobaounion.utils.UrlUtils;
 import com.example.taobaounion.view.ICategoryPagerCallback;
@@ -322,30 +324,18 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     }
 
     @Override
-    public void onListItemClick(HomePagerContent.DataDTO item) {
+    public void onListItemClick(IBaseInfo item) {
         // 列表item被点击了
         LogUtils.d(this, item.getTitle());
         handleItemClick(item);
     }
 
-    private void handleItemClick(HomePagerContent.DataDTO item) {
-        //处理数据
-        String title = item.getTitle();
-        //领券页面
-        String url = item.getCoupon_click_url();
-        if (TextUtils.isEmpty(url)) {
-            // 详情页面
-            url = item.getClick_url();
-        }
-        String cover = item.getPict_url();
-        // 拿到TicketPresenter对象
-        ITicketPresenter ticketPresenter = PresenterManager.getInstance().getTicketPresenter();
-        ticketPresenter.getTicket(title, url , cover);
-        startActivity(new Intent(getContext(), TicketActivity.class));
+    private void handleItemClick(IBaseInfo item) {
+        TicketUtil.toTicketPage(getContext(), item);
     }
 
     @Override
-    public void onLooperItemClick(HomePagerContent.DataDTO item) {
+    public void onLooperItemClick(IBaseInfo item) {
         // 轮播图item被点击了
         LogUtils.d(this, item.getTitle());
         handleItemClick(item);

@@ -1,5 +1,7 @@
 package com.example.taobaounion.model.domain;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class HomePagerContent implements Serializable {
                 '}';
     }
 
-    public static class DataDTO implements Serializable {
+    public static class DataDTO implements Serializable, IBaseInfo {
 
         private Long category_id;
 
@@ -289,8 +291,18 @@ public class HomePagerContent implements Serializable {
             this.small_images = small_images;
         }
 
+        @Override
+        public String getCover() {
+            return getPict_url();
+        }
+
         public String getTitle() {
             return title;
+        }
+
+        @Override
+        public String getUrl() {
+            return TextUtils.isEmpty(getCoupon_click_url()) ? getCoupon_click_url() : getClick_url();
         }
 
         public void setTitle(String title) {

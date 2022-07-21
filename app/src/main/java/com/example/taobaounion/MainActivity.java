@@ -10,7 +10,7 @@ import com.example.taobaounion.base.BaseActivity;
 import com.example.taobaounion.base.BaseFragment;
 import com.example.taobaounion.fragments.HomeFragment;
 import com.example.taobaounion.fragments.HomePagerFragment;
-import com.example.taobaounion.fragments.RedPacketFragment;
+import com.example.taobaounion.fragments.OnSellFragment;
 import com.example.taobaounion.fragments.SearchFragment;
 import com.example.taobaounion.fragments.RecommendFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,7 +24,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.main_navigation_bar)
     public BottomNavigationView mNavigationView;
     private HomeFragment mHomeFragment;
-    private RedPacketFragment mRedPacketFragment;
+    private OnSellFragment mOnSellFragment;
     private SearchFragment mSearchFragment;
     private RecommendFragment mRecommendFragment;
     private FragmentManager mFm;
@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity {
 
     private void initFragments() {
         mHomeFragment = new HomeFragment();
-        mRedPacketFragment = new RedPacketFragment();
+        mOnSellFragment = new OnSellFragment();
         mSearchFragment = new SearchFragment();
         mRecommendFragment = new RecommendFragment();
         mFm = getSupportFragmentManager();
@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity {
                 if(item.getItemId() == R.id.home){
                     switchFragment(mHomeFragment);
                 }else if(item.getItemId() == R.id.red_packet){
-                    switchFragment(mRedPacketFragment);
+                    switchFragment(mOnSellFragment);
 
                 } else if(item.getItemId() == R.id.selected){
                     switchFragment(mRecommendFragment);
@@ -88,15 +88,17 @@ public class MainActivity extends BaseActivity {
     private void switchFragment(BaseFragment fragment) {
         FragmentTransaction transaction = mFm.beginTransaction();
 
+        if (lastFragment != null) {
+            transaction.hide(lastFragment);
+        }
+        lastFragment = fragment;
+
         if (!fragment.isAdded()) {
             transaction.add(R.id.main_page_container, fragment);
         }else{
             transaction.show(fragment);
         }
-        if (lastFragment != null) {
-            transaction.hide(lastFragment);
-        }
-        lastFragment = fragment;
+
 //        transaction.replace(R.id.main_page_container, fragment);
         transaction.commit();
     }
