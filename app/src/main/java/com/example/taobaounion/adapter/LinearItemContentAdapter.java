@@ -1,6 +1,7 @@
 package com.example.taobaounion.adapter;
 
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,15 @@ import com.bumptech.glide.Glide;
 import com.example.taobaounion.R;
 import com.example.taobaounion.model.domain.HomePagerContent;
 import com.example.taobaounion.model.domain.IBaseInfo;
+import com.example.taobaounion.model.domain.ILinearItemInfo;
 import com.example.taobaounion.utils.UrlUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerContentAdapter.ViewHolder> {
+public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerContentAdapter.InnerHolder> {
 
-    private List<HomePagerContent.DataDTO> mDataList = new ArrayList<>();
+    private List<ILinearItemInfo> mDataList = new ArrayList<>();
     private OnListItemClickListener mItemClickListener;
 
     public HomePagerContentAdapter() {
@@ -29,13 +31,13 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_pager_content, parent, false);
-        return new ViewHolder(rootView);
+    public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_linear_goods_content, parent, false);
+        return new InnerHolder(rootView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HomePagerContentAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         View itemView = holder.itemView;
 
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -54,18 +56,27 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
         TextView goodsOriginalPriceTV = itemView.findViewById(R.id.goods_original_price);
         TextView goodsSellCountTV = itemView.findViewById(R.id.goods_sell_count);
 
-        HomePagerContent.DataDTO data = mDataList.get(position);
+        ILinearItemInfo data = mDataList.get(position);
 
-        ViewGroup.LayoutParams layoutParams = goodsCoverIV.getLayoutParams();
-        int width = layoutParams.width;
-        int height = layoutParams.height;
-        int coverSize = (Math.max(width, height)) / 2;
-
-        Glide.with(itemView.getContext()).load(UrlUtils.getCoverPath(data.getPict_url(), coverSize)).into(goodsCoverIV);
+//        ViewGroup.LayoutParams layoutParams = goodsCoverIV.getLayoutParams();
+//        int width = layoutParams.width;
+//        int height = layoutParams.height;
+//        int coverSize = (Math.max(width, height)) / 2;
+        String cover = data.getCover();
+        if (!TextUtils.isEmpty(cover)) {
+            String coverPath = UrlUtils.getCoverPath(cover, 200);
+            Glide.with(itemView.getContext()).load(coverPath).into(goodsCoverIV);
+        }else{
+            goodsCoverIV.setImageResource(R.mipmap.ic_launcher);
+        }
         goodsTitleIV.setText(data.getTitle());
 
-        long couponAmount = data.getCoupon_amount();
-        float finalPrice = Float.parseFloat(data.getZk_final_price());
+        Long couponAmount = data.getCouponAmount();
+        if (couponAmount == null) {
+            couponAmount = 0L;
+        }
+
+        float finalPrice = Float.parseFloat(data.getFinalPrice());
         float resultPrice = finalPrice - couponAmount;
         goodsOffPriceTV.setText(String.format(itemView.getContext().getString(R.string.text_off_price), couponAmount));
         goodsAfterOffPriceTV.setText(String.format("%.2f", resultPrice));
@@ -85,13 +96,13 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
         notifyItemRangeChanged(oldSize, contents.size());
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(@NonNull View itemView) {
+    public class InnerHolder extends RecyclerView.ViewHolder {
+        public InnerHolder(@NonNull View itemView) {
             super(itemView);
         }
     }
 
-    public void setDataList(List<HomePagerContent.DataDTO> dataList) {
+    public void setDataList(List<? extends ILinearItemInfo> dataList) {
         mDataList.clear();
         if (dataList != null) {
             mDataList.addAll(dataList);
