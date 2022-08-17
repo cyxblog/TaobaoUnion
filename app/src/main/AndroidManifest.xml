@@ -23,6 +23,9 @@
             android:launchMode="singleTop">
 
         </activity>
+
+        <activity android:name=".ScanQRCodeActivity"/>
+
     </application>
 
 </manifest>

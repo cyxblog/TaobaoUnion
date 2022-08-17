@@ -6,7 +6,7 @@ public class SearchContent {
 
 
     private Boolean success;
-    private Integer code;
+    private Long code;
     private String message;
     private DataDTO data;
 
@@ -28,11 +28,11 @@ public class SearchContent {
         this.success = success;
     }
 
-    public Integer getCode() {
+    public Long getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(Long code) {
         this.code = code;
     }
 
@@ -72,7 +72,7 @@ public class SearchContent {
 
         public static class TbkDgMaterialOptionalResponseDTO {
             private ResultListDTO result_list;
-            private Integer total_results;
+            private Long total_results;
             private String request_id;
 
             public ResultListDTO getResult_list() {
@@ -83,11 +83,11 @@ public class SearchContent {
                 this.result_list = result_list;
             }
 
-            public Integer getTotal_results() {
+            public Long getTotal_results() {
                 return total_results;
             }
 
-            public void setTotal_results(Integer total_results) {
+            public void setTotal_results(Long total_results) {
                 this.total_results = total_results;
             }
 
@@ -126,41 +126,41 @@ public class SearchContent {
                             '}';
                 }
 
-                public static class MapDataDTO {
-                    private Integer category_id;
+                public static class MapDataDTO implements ILinearItemInfo{
+                    private Long category_id;
                     private String category_name;
                     private String commission_rate;
                     private String commission_type;
-                    private String coupon_amount;
+                    private Long coupon_amount;
                     private String coupon_end_time;
                     private String coupon_id;
                     private String coupon_info;
-                    private Integer coupon_remain_count;
+                    private Long coupon_remain_count;
                     private String coupon_share_url;
                     private String coupon_start_fee;
                     private String coupon_start_time;
-                    private Integer coupon_total_count;
+                    private Long coupon_total_count;
                     private String include_dxjh;
                     private String include_mkt;
                     private String info_dxjh;
                     private String item_description;
                     private Long item_id;
                     private String item_url;
-                    private Integer level_one_category_id;
+                    private Long level_one_category_id;
                     private String level_one_category_name;
                     private String nick;
                     private Long num_iid;
                     private String pict_url;
                     private String presale_deposit;
-                    private Integer presale_end_time;
-                    private Integer presale_start_time;
-                    private Integer presale_tail_end_time;
-                    private Integer presale_tail_start_time;
+                    private Long presale_end_time;
+                    private Long presale_start_time;
+                    private Long presale_tail_end_time;
+                    private Long presale_tail_start_time;
                     private String provcity;
                     private String real_post_fee;
                     private String reserve_price;
-                    private Integer seller_id;
-                    private Integer shop_dsr;
+                    private Long seller_id;
+                    private Long shop_dsr;
                     private String shop_title;
                     private String short_title;
                     private SmallImagesDTO small_images;
@@ -168,12 +168,12 @@ public class SearchContent {
                     private String tk_total_commi;
                     private String tk_total_sales;
                     private String url;
-                    private Integer user_type;
-                    private Integer volume;
+                    private Long user_type;
+                    private Long volume;
                     private String white_image;
                     private String x_id;
                     private String zk_final_price;
-                    private Integer jdd_num;
+                    private Long jdd_num;
                     private Object jdd_price;
                     private Object oetime;
                     private Object ostime;
@@ -234,11 +234,11 @@ public class SearchContent {
                                 '}';
                     }
 
-                    public Integer getCategory_id() {
+                    public Long getCategory_id() {
                         return category_id;
                     }
 
-                    public void setCategory_id(Integer category_id) {
+                    public void setCategory_id(Long category_id) {
                         this.category_id = category_id;
                     }
 
@@ -266,11 +266,11 @@ public class SearchContent {
                         this.commission_type = commission_type;
                     }
 
-                    public String getCoupon_amount() {
+                    public Long getCoupon_amount() {
                         return coupon_amount;
                     }
 
-                    public void setCoupon_amount(String coupon_amount) {
+                    public void setCoupon_amount(Long coupon_amount) {
                         this.coupon_amount = coupon_amount;
                     }
 
@@ -298,11 +298,11 @@ public class SearchContent {
                         this.coupon_info = coupon_info;
                     }
 
-                    public Integer getCoupon_remain_count() {
+                    public Long getCoupon_remain_count() {
                         return coupon_remain_count;
                     }
 
-                    public void setCoupon_remain_count(Integer coupon_remain_count) {
+                    public void setCoupon_remain_count(Long coupon_remain_count) {
                         this.coupon_remain_count = coupon_remain_count;
                     }
 
@@ -330,11 +330,11 @@ public class SearchContent {
                         this.coupon_start_time = coupon_start_time;
                     }
 
-                    public Integer getCoupon_total_count() {
+                    public Long getCoupon_total_count() {
                         return coupon_total_count;
                     }
 
-                    public void setCoupon_total_count(Integer coupon_total_count) {
+                    public void setCoupon_total_count(Long coupon_total_count) {
                         this.coupon_total_count = coupon_total_count;
                     }
 
@@ -386,11 +386,11 @@ public class SearchContent {
                         this.item_url = item_url;
                     }
 
-                    public Integer getLevel_one_category_id() {
+                    public Long getLevel_one_category_id() {
                         return level_one_category_id;
                     }
 
-                    public void setLevel_one_category_id(Integer level_one_category_id) {
+                    public void setLevel_one_category_id(Long level_one_category_id) {
                         this.level_one_category_id = level_one_category_id;
                     }
 
@@ -434,35 +434,35 @@ public class SearchContent {
                         this.presale_deposit = presale_deposit;
                     }
 
-                    public Integer getPresale_end_time() {
+                    public Long getPresale_end_time() {
                         return presale_end_time;
                     }
 
-                    public void setPresale_end_time(Integer presale_end_time) {
+                    public void setPresale_end_time(Long presale_end_time) {
                         this.presale_end_time = presale_end_time;
                     }
 
-                    public Integer getPresale_start_time() {
+                    public Long getPresale_start_time() {
                         return presale_start_time;
                     }
 
-                    public void setPresale_start_time(Integer presale_start_time) {
+                    public void setPresale_start_time(Long presale_start_time) {
                         this.presale_start_time = presale_start_time;
                     }
 
-                    public Integer getPresale_tail_end_time() {
+                    public Long getPresale_tail_end_time() {
                         return presale_tail_end_time;
                     }
 
-                    public void setPresale_tail_end_time(Integer presale_tail_end_time) {
+                    public void setPresale_tail_end_time(Long presale_tail_end_time) {
                         this.presale_tail_end_time = presale_tail_end_time;
                     }
 
-                    public Integer getPresale_tail_start_time() {
+                    public Long getPresale_tail_start_time() {
                         return presale_tail_start_time;
                     }
 
-                    public void setPresale_tail_start_time(Integer presale_tail_start_time) {
+                    public void setPresale_tail_start_time(Long presale_tail_start_time) {
                         this.presale_tail_start_time = presale_tail_start_time;
                     }
 
@@ -490,19 +490,19 @@ public class SearchContent {
                         this.reserve_price = reserve_price;
                     }
 
-                    public Integer getSeller_id() {
+                    public Long getSeller_id() {
                         return seller_id;
                     }
 
-                    public void setSeller_id(Integer seller_id) {
+                    public void setSeller_id(Long seller_id) {
                         this.seller_id = seller_id;
                     }
 
-                    public Integer getShop_dsr() {
+                    public Long getShop_dsr() {
                         return shop_dsr;
                     }
 
-                    public void setShop_dsr(Integer shop_dsr) {
+                    public void setShop_dsr(Long shop_dsr) {
                         this.shop_dsr = shop_dsr;
                     }
 
@@ -528,6 +528,11 @@ public class SearchContent {
 
                     public void setSmall_images(SmallImagesDTO small_images) {
                         this.small_images = small_images;
+                    }
+
+                    @Override
+                    public String getCover() {
+                        return getPict_url();
                     }
 
                     public String getTitle() {
@@ -562,19 +567,29 @@ public class SearchContent {
                         this.url = url;
                     }
 
-                    public Integer getUser_type() {
+                    public Long getUser_type() {
                         return user_type;
                     }
 
-                    public void setUser_type(Integer user_type) {
+                    public void setUser_type(Long user_type) {
                         this.user_type = user_type;
                     }
 
-                    public Integer getVolume() {
+                    @Override
+                    public String getFinalPrice() {
+                        return getZk_final_price();
+                    }
+
+                    @Override
+                    public Long getCouponAmount() {
+                        return coupon_amount;
+                    }
+
+                    public long getVolume() {
                         return volume;
                     }
 
-                    public void setVolume(Integer volume) {
+                    public void setVolume(Long volume) {
                         this.volume = volume;
                     }
 
@@ -602,11 +617,11 @@ public class SearchContent {
                         this.zk_final_price = zk_final_price;
                     }
 
-                    public Integer getJdd_num() {
+                    public Long getJdd_num() {
                         return jdd_num;
                     }
 
-                    public void setJdd_num(Integer jdd_num) {
+                    public void setJdd_num(Long jdd_num) {
                         this.jdd_num = jdd_num;
                     }
 

@@ -1,14 +1,20 @@
 package com.example.taobaounion.fragments;
 
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.taobaounion.MainActivity;
 import com.example.taobaounion.R;
+import com.example.taobaounion.ScanQRCodeActivity;
 import com.example.taobaounion.adapter.HomePagerAdapter;
 import com.example.taobaounion.base.BaseFragment;
 import com.example.taobaounion.model.domain.Categories;
@@ -17,7 +23,9 @@ import com.example.taobaounion.presenter.IHomePresenter;
 import com.example.taobaounion.utils.LogUtils;
 import com.example.taobaounion.utils.PresenterManager;
 import com.example.taobaounion.view.IHomeCallback;
+import com.example.taobaounion.view.IMainActivity;
 import com.google.android.material.tabs.TabLayout;
+import com.vondear.rxfeature.activity.ActivityScanerCode;
 
 import butterknife.BindView;
 
@@ -28,6 +36,12 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
 
     @BindView(R.id.home_pager)
     public ViewPager mHomePager;
+
+    @BindView(R.id.home_search_input_box)
+    public EditText mSearchInputBox;
+
+    @BindView(R.id.scan_icon)
+    public ImageView mScanBtn;
 
     private static final String TAG = "HomeFragment";
     private IHomePresenter mHomePresenter;
@@ -51,6 +65,26 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
         mHomePresenter = PresenterManager.getInstance().getHomePresenter();
         Log.d(TAG, "initPresenter: ");
         mHomePresenter.registerCallback(this);
+
+        mSearchInputBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentActivity activity = getActivity();
+                if (activity instanceof MainActivity) {
+                    ((IMainActivity)activity).switch2SearchPage();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void initListener() {
+        mScanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), ScanQRCodeActivity.class));
+            }
+        });
     }
 
     @Override

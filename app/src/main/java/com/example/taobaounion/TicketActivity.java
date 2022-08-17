@@ -122,10 +122,15 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
 
     @Override
     public void onTicketLoaded(String cover, TicketResult result) {
+        //设置商品封面
         if (mCoverIV != null && !TextUtils.isEmpty(cover)) {
             Glide.with(this).load(UrlUtils.getCoverPath(cover, 300)).into(mCoverIV);
         }
 
+        if(TextUtils.isEmpty(cover)){
+            mCoverIV.setVisibility(View.GONE);
+        }
+        // 设置code
         if (result != null && result.getData().getTbk_tpwd_create_response() != null) {
             String ticketModel = result.getData().getTbk_tpwd_create_response().getData().getModel();
             String ticketCodeText = StringUtils.getTicketCode(ticketModel);

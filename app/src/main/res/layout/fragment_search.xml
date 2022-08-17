@@ -1,11 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cyx="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#EFEEEE"
+    android:orientation="vertical">
 
-    <TextView
+    <!--搜索历史-->
+    <LinearLayout
+        android:id="@+id/search_history_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_search_history"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/search_history_delete_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@mipmap/delete_icon" />
+        </RelativeLayout>
+
+        <com.example.taobaounion.view.custom.TextFlowLayout
+            android:id="@+id/search_history_flow_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            cyx:horizontalSpace="10dp"
+            cyx:verticalSpace="10dp" />
+
+    </LinearLayout>
+
+    <!--搜索推荐-->
+    <LinearLayout
+        android:id="@+id/search_recommend_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_hot_search"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+
+        <com.example.taobaounion.view.custom.TextFlowLayout
+            android:id="@+id/search_recommend_flow_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            cyx:horizontalSpace="10dp"
+            cyx:verticalSpace="10dp" />
+
+    </LinearLayout>
+
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="search_fragment"/>
+        android:id="@+id/search_result_container">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/search_result_list"/>
+
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+
+</LinearLayout>

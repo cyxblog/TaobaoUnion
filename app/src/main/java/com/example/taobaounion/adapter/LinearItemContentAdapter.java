@@ -21,12 +21,12 @@ import com.example.taobaounion.utils.UrlUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerContentAdapter.InnerHolder> {
+public class LinearItemContentAdapter extends RecyclerView.Adapter<LinearItemContentAdapter.InnerHolder> {
 
     private List<ILinearItemInfo> mDataList = new ArrayList<>();
     private OnListItemClickListener mItemClickListener;
 
-    public HomePagerContentAdapter() {
+    public LinearItemContentAdapter() {
     }
 
     @NonNull
@@ -90,7 +90,7 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
         return mDataList.size();
     }
 
-    public void addData(List<HomePagerContent.DataDTO> contents) {
+    public void addData(List<? extends ILinearItemInfo> contents) {
         int oldSize = mDataList.size();
         mDataList.addAll(contents);
         notifyItemRangeChanged(oldSize, contents.size());

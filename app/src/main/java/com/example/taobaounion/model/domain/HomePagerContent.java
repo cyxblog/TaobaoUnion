@@ -58,7 +58,7 @@ public class HomePagerContent implements Serializable {
                 '}';
     }
 
-    public static class DataDTO implements Serializable, IBaseInfo {
+    public static class DataDTO implements Serializable, ILinearItemInfo {
 
         private Long category_id;
 
@@ -317,7 +317,17 @@ public class HomePagerContent implements Serializable {
             this.user_type = user_type;
         }
 
-        public Long getVolume() {
+        @Override
+        public String getFinalPrice() {
+            return getZk_final_price();
+        }
+
+        @Override
+        public Long getCouponAmount() {
+            return getCoupon_amount();
+        }
+
+        public long getVolume() {
             return volume;
         }
 

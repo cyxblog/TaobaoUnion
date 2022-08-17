@@ -24,7 +24,12 @@ import android.widget.RelativeLayout;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
+import com.example.taobaounion.model.domain.IBaseInfo;
+import com.example.taobaounion.utils.PresenterManager;
+import com.example.taobaounion.utils.TicketUtil;
+import com.example.taobaounion.utils.ToastUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
@@ -32,7 +37,6 @@ import com.google.zxing.MultiFormatReader;
 import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.vondear.rxfeature.activity.ActivityScanerCode;
 import com.vondear.rxfeature.module.scaner.CameraManager;
 import com.vondear.rxfeature.module.scaner.OnRxScanerListener;
 import com.vondear.rxfeature.module.scaner.PlanarYUVLuminanceSource;
@@ -56,12 +60,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static android.content.ContentValues.TAG;
 
-public class ScanORCodeActivity {
+public class ScanQRCodeActivity extends FragmentActivity {
 
     /**
      * 扫描结果监听
      */
-    private static OnRxScanerListener mScanerListener;
+    private static OnRxScanerListener mScannerListener;
 
     private InactivityTimer inactivityTimer;
 
@@ -123,15 +127,15 @@ public class ScanORCodeActivity {
     /**
      * 设置扫描信息回调
      */
-    public static void setScanerListener(OnRxScanerListener scanerListener) {
-        mScanerListener = scanerListener;
+    public static void setScannerListener(OnRxScanerListener scannerListener) {
+        mScannerListener = scannerListener;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RxBarTool.setNoTitle(this);
-        setContentView(R.layout.activity_scaner_code);
+        setContentView(R.layout.activity_scan_qr_code);
         RxBarTool.setTransparentStatusBar(this);
         //界面控件初始化
         initDecode();
@@ -141,7 +145,7 @@ public class ScanORCodeActivity {
         //扫描动画初始化
         initScanerAnimation();
         //初始化 CameraManager
-        CameraManager.init(mContext);
+        CameraManager.init(this);
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
     }
@@ -231,7 +235,7 @@ public class ScanORCodeActivity {
     @Override
     protected void onDestroy() {
         inactivityTimer.shutdown();
-        mScanerListener = null;
+        mScannerListener = null;
         super.onDestroy();
     }
 
@@ -246,9 +250,9 @@ public class ScanORCodeActivity {
 
     private void initPermission() {
         //请求Camera权限 与 文件读写 权限
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(mContext, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
     }
 
@@ -283,7 +287,7 @@ public class ScanORCodeActivity {
         } else if (viewId == R.id.top_back) {
             finish();
         } else if (viewId == R.id.top_openpicture) {
-            RxPhotoTool.openLocalImage(mContext);
+            RxPhotoTool.openLocalImage(this);
         }
     }
 
@@ -314,7 +318,7 @@ public class ScanORCodeActivity {
             return;
         }
         if (handler == null) {
-            handler = new ActivityScanerCode.CaptureActivityHandler();
+            handler = new CaptureActivityHandler();
         }
     }
 
@@ -334,16 +338,16 @@ public class ScanORCodeActivity {
                 // 开始对图像资源解码
                 Result rawResult = RxQrBarTool.decodeFromPhoto(photo);
                 if (rawResult != null) {
-                    if (mScanerListener == null) {
+                    if (mScannerListener == null) {
                         initDialogResult(rawResult);
                     } else {
-                        mScanerListener.onSuccess("From to Picture", rawResult);
+                        mScannerListener.onSuccess("From to Picture", rawResult);
                     }
                 } else {
-                    if (mScanerListener == null) {
+                    if (mScannerListener == null) {
                         RxToast.error("图片识别失败.");
                     } else {
-                        mScanerListener.onFail("From to Picture", "图片识别失败");
+                        mScannerListener.onFail("From to Picture", "图片识别失败");
                     }
                 }
             } catch (IOException e) {
@@ -360,7 +364,7 @@ public class ScanORCodeActivity {
 
         if (rxDialogSure == null) {
             //提示弹窗
-            rxDialogSure = new RxDialogSure(mContext);
+            rxDialogSure = new RxDialogSure(this);
         }
 
         if (BarcodeFormat.QR_CODE.equals(type)) {
@@ -392,34 +396,58 @@ public class ScanORCodeActivity {
             rxDialogSure.show();
         }
 
-        RxSPTool.putContent(mContext, RxConstants.SP_SCAN_CODE, RxDataTool.stringToInt(RxSPTool.getContent(mContext, RxConstants.SP_SCAN_CODE)) + 1 + "");
+        RxSPTool.putContent(this, RxConstants.SP_SCAN_CODE, RxDataTool.stringToInt(RxSPTool.getContent(this, RxConstants.SP_SCAN_CODE)) + 1 + "");
     }
 
     public void handleDecode(Result result) {
         inactivityTimer.onActivity();
         //扫描成功之后的振动与声音提示
-        RxBeepTool.playBeep(mContext, vibrate);
+        RxBeepTool.playBeep(this, vibrate);
 
         String result1 = result.getText();
         Log.v("二维码/条形码 扫描结果", result1);
-        if (mScanerListener == null) {
-            RxToast.success(result1);
-            initDialogResult(result);
+        if (result1.contains("taobao.com")) {
+            // 跳转到淘口令界面
+            TicketUtil.toTicketPage(this, new IBaseInfo() {
+                @Override
+                public String getCover() {
+                    return null;
+                }
+
+                @Override
+                public String getTitle() {
+                    return "";
+                }
+
+                @Override
+                public String getUrl() {
+                    return result1;
+                }
+            });
         } else {
-            mScanerListener.onSuccess("From to Camera", result);
+            //非法二维码
+            ToastUtil.showToast("当前二维码无效");
         }
+        // 处理扫描结果
+
+//        if (mScannerListener == null) {
+//            RxToast.success(result1);
+//            initDialogResult(result);
+//        } else {
+//            mScannerListener.onSuccess("From to Camera", result);
+//        }
     }
     //==============================================================================================解析结果 及 后续处理 end
 
     final class CaptureActivityHandler extends Handler {
 
-        ActivityScanerCode.DecodeThread decodeThread = null;
-        private ActivityScanerCode.State state;
+        DecodeThread decodeThread = null;
+        private State state;
 
         public CaptureActivityHandler() {
-            decodeThread = new ActivityScanerCode.DecodeThread();
+            decodeThread = new DecodeThread();
             decodeThread.start();
-            state = ActivityScanerCode.State.SUCCESS;
+            state = State.SUCCESS;
             CameraManager.get().startPreview();
             restartPreviewAndDecode();
         }
@@ -427,22 +455,22 @@ public class ScanORCodeActivity {
         @Override
         public void handleMessage(Message message) {
             if (message.what == R.id.auto_focus) {
-                if (state == ActivityScanerCode.State.PREVIEW) {
+                if (state == State.PREVIEW) {
                     CameraManager.get().requestAutoFocus(this, R.id.auto_focus);
                 }
             } else if (message.what == R.id.restart_preview) {
                 restartPreviewAndDecode();
             } else if (message.what == R.id.decode_succeeded) {
-                state = ActivityScanerCode.State.SUCCESS;
+                state = State.SUCCESS;
                 handleDecode((Result) message.obj);// 解析成功，回调
             } else if (message.what == R.id.decode_failed) {
-                state = ActivityScanerCode.State.PREVIEW;
+                state = State.PREVIEW;
                 CameraManager.get().requestPreviewFrame(decodeThread.getHandler(), R.id.decode);
             }
         }
 
         public void quitSynchronously() {
-            state = ActivityScanerCode.State.DONE;
+            state = State.DONE;
             decodeThread.interrupt();
             CameraManager.get().stopPreview();
             Message quit = Message.obtain(decodeThread.getHandler(), R.id.quit);
@@ -451,7 +479,7 @@ public class ScanORCodeActivity {
                 decodeThread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 removeMessages(R.id.decode_succeeded);
                 removeMessages(R.id.decode_failed);
                 removeMessages(R.id.decode);
@@ -461,8 +489,8 @@ public class ScanORCodeActivity {
         }
 
         private void restartPreviewAndDecode() {
-            if (state == ActivityScanerCode.State.SUCCESS) {
-                state = ActivityScanerCode.State.PREVIEW;
+            if (state == State.SUCCESS) {
+                state = State.PREVIEW;
                 CameraManager.get().requestPreviewFrame(decodeThread.getHandler(), R.id.decode);
                 CameraManager.get().requestAutoFocus(this, R.id.auto_focus);
             }
@@ -490,7 +518,7 @@ public class ScanORCodeActivity {
         @Override
         public void run() {
             Looper.prepare();
-            handler = new ActivityScanerCode.DecodeHandler();
+            handler = new DecodeHandler();
             handlerInitLatch.countDown();
             Looper.loop();
         }

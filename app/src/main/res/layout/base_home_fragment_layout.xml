@@ -21,6 +21,7 @@
             android:id="@+id/iv_logo"/>
 
         <EditText
+            android:id="@+id/home_search_input_box"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_toEndOf="@+id/iv_logo"

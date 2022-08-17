@@ -1,9 +1,7 @@
 package com.example.taobaounion.fragments;
 
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -16,40 +14,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.taobaounion.R;
-import com.example.taobaounion.TicketActivity;
-import com.example.taobaounion.adapter.HomePagerContentAdapter;
+import com.example.taobaounion.adapter.LinearItemContentAdapter;
 import com.example.taobaounion.adapter.LooperPagerAdapter;
 import com.example.taobaounion.base.BaseFragment;
 import com.example.taobaounion.model.domain.Categories;
 import com.example.taobaounion.model.domain.HomePagerContent;
 import com.example.taobaounion.model.domain.IBaseInfo;
-import com.example.taobaounion.presenter.CategoryPagerPresenterImpl;
 import com.example.taobaounion.presenter.ICategoryPagerPresenter;
-import com.example.taobaounion.presenter.ITicketPresenter;
-import com.example.taobaounion.presenter.TicketPresenterImpl;
 import com.example.taobaounion.utils.Constants;
 import com.example.taobaounion.utils.LogUtils;
 import com.example.taobaounion.utils.PresenterManager;
 import com.example.taobaounion.utils.SizeUtils;
 import com.example.taobaounion.utils.TicketUtil;
 import com.example.taobaounion.utils.ToastUtil;
-import com.example.taobaounion.utils.UrlUtils;
 import com.example.taobaounion.view.ICategoryPagerCallback;
 import com.example.taobaounion.view.custom.AutoLoopViewPager;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
-import com.lcodecore.tkrefreshlayout.utils.LogUtil;
 import com.lcodecore.tkrefreshlayout.views.TBNestedScrollView;
 
 import java.util.List;
 
 import butterknife.BindView;
 
-public class HomePagerFragment extends BaseFragment implements ICategoryPagerCallback, HomePagerContentAdapter.OnListItemClickListener, LooperPagerAdapter.OnLooperPagerItemClickListener {
+public class HomePagerFragment extends BaseFragment implements ICategoryPagerCallback, LinearItemContentAdapter.OnListItemClickListener, LooperPagerAdapter.OnLooperPagerItemClickListener {
 
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int mMaterialId;
-    private HomePagerContentAdapter mHomePagerContentAdapter;
+    private LinearItemContentAdapter mLinearItemContentAdapter;
     private LooperPagerAdapter mLooperPagerAdapter;
     private AutoLoopViewPager mLooperPager;
 
@@ -103,7 +95,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @Override
     protected void initListener() {
 
-        mHomePagerContentAdapter.setOnItemClickListener(this);
+        mLinearItemContentAdapter.setOnItemClickListener(this);
 
         mLooperPagerAdapter.setOnLooperPagerItemClickListener(this);
 
@@ -201,8 +193,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
             }
         });
         // 创建适配器
-        mHomePagerContentAdapter = new HomePagerContentAdapter();
-        mContentList.setAdapter(mHomePagerContentAdapter);
+        mLinearItemContentAdapter = new LinearItemContentAdapter();
+        mContentList.setAdapter(mLinearItemContentAdapter);
 
         // 创建轮播图适配器
         mLooperPagerAdapter = new LooperPagerAdapter();
@@ -245,8 +237,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @Override
     public void onContentLoaded(List<HomePagerContent.DataDTO> contents) {
         //数据列表加载
-        if (mHomePagerContentAdapter != null) {
-            mHomePagerContentAdapter.setDataList(contents);
+        if (mLinearItemContentAdapter != null) {
+            mLinearItemContentAdapter.setDataList(contents);
         }
         setUpState(State.SUCCESS);
     }
@@ -291,7 +283,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @Override
     public void onLoadMoreLoaded(List<HomePagerContent.DataDTO> contents) {
         // 添加到适配器底部
-        mHomePagerContentAdapter.addData(contents);
+        mLinearItemContentAdapter.addData(contents);
         if (mHomePagerRefresh != null) {
             mHomePagerRefresh.finishLoadmore();
             ToastUtil.showToast("已为您加载" + contents.size() + "个商品。");
